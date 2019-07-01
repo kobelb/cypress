@@ -44,7 +44,7 @@
     "vinyl-source-stream": "1.1.2"
   },
   "dependencies": {
-    "bluebird": "3.5.3",
+    "bluebird": "3.5.5",
     "lodash": "4.17.11"
   }
 }
