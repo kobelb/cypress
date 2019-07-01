@@ -145,7 +145,7 @@
     "prefixed-list": "1.0.1",
     "pretty-ms": "5.0.0",
     "print-arch": "1.0.0",
-    "ramda": "0.24.1",
+    "ramda": "0.26.1",
     "shelljs": "0.8.3",
     "sinon": "7.3.2",
     "snap-shot-it": "7.7.1",
