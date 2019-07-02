@@ -301,12 +301,24 @@ const isSelect = (el) => {
   return getTagName(el) === 'select'
 }
 
+const isOption = (el) => {
+  return getTagName(el) === 'option'
+}
+
+const isOptgroup = (el) => {
+  return getTagName(el) === 'optgroup'
+}
+
 const isBody = (el) => {
   return getTagName(el) === 'body'
 }
 
 const isIframe = (el) => {
   return getTagName(el) === 'iframe'
+}
+
+const isHTML = (el) => {
+  return getTagName(el) === 'html'
 }
 
 const isSvg = function (el) {
@@ -403,6 +415,11 @@ const getAllParents = (el) => {
   }
 
   return allParents
+
+}
+
+const isChild = ($el, $maybeChild) => {
+  return $el.children().index($maybeChild) >= 0
 }
 
 const isSelector = ($el, selector) => {
@@ -603,10 +620,26 @@ const getActiveElByDocument = (doc) => {
   return getNativeProp(doc, 'body')
 }
 
-const getFirstFixedOrStickyPositionParent = ($el) => {
-  // return null if we're at body/html
+const getFirstParentWithTagName = ($el, tagName) => {
+  // return null if we're at body/html/document
   // cuz that means nothing has fixed position
-  if (!$el || $el.is('body,html')) {
+  if (!$el[0] || !tagName || $el.is('body,html') || $document.isDocument($el)) {
+    return null
+  }
+
+  // if we are the matching element return ourselves
+  if (getTagName($el[0]) === tagName) {
+    return $el
+  }
+
+  // else recursively continue to walk up the parent node chain
+  return getFirstParentWithTagName($el.parent(), tagName)
+}
+
+const getFirstFixedOrStickyPositionParent = ($el) => {
+  // return null if we're at body/html/document
+  // cuz that means nothing has fixed position
+  if (!$el || $el.is('body,html') || $document.isDocument($el)) {
     return null
   }
 
@@ -735,7 +768,6 @@ const getFirstDeepestElement = (elements, index = 0) => {
   }
 
   return $current
-
 }
 
 // short form css-inlines the element
@@ -821,6 +853,8 @@ module.exports = {
 
   isAncestor,
 
+  isChild,
+
   isScrollable,
 
   isTextLike,
@@ -831,7 +865,13 @@ module.exports = {
 
   isSame,
 
+  isOption,
+
+  isOptgroup,
+
   isBody,
+
+  isHTML,
 
   isInput,
 
@@ -870,6 +910,8 @@ module.exports = {
   getFirstDeepestElement,
 
   getFirstCommonAncestor,
+
+  getFirstParentWithTagName,
 
   getFirstFixedOrStickyPositionParent,
 
